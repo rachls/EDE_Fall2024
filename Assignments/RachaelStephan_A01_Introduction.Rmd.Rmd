@@ -22,11 +22,11 @@ Enter answers to the questions just below the >Answer: prompt.
 
 1. What are your previous experiences with data analytics, R, and Git? Include both formal and informal training.
 
-> Answer: 
+> Answer: I have some training with R through my undergraduate degree. There was some basic introductory labs on the program and a more advanced class on data analysis on scientific statistics (e.g., likelihood, models, etc.). I taught myself a little bit of ggplot2, but it was very rudimentary. I completed an undergraduate thesis in which I conducted my statistical analysis and created graphs in RStudio. I have no experience with git. 
 
 2. Are there any components of the course about which you feel confident?
 
-> Answer: 
+> Answer: I feel confident that I will be able to navigate online and course resources to learn about R and Git where I am lacking. I am confident that I have a decent base to build analytical skills off of. 
 
 3. Are there any components of the course about which you feel apprehensive?
 

@@ -2,8 +2,7 @@
 title: 'Assignment 1: Introduction'
 author: "Rachael Stephan"
 output:
-  html_document:
-    df_print: paged
+  pdf_document:
 ---
 
 ## OVERVIEW

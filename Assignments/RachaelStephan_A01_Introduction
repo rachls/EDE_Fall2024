@@ -1,7 +1,9 @@
 ---
-title: "Assignment 1: Introduction"
+title: 'Assignment 1: Introduction'
 author: "Rachael Stephan"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ## OVERVIEW

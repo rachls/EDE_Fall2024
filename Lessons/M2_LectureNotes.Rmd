@@ -1,0 +1,29 @@
+---
+title: "M2 - Lectures"
+author: "Rachael Stephan"
+date: "2024-09-12"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Intro to R Markdown
+
+At the top is the YAML section. This is the header.
+
+Rmarkdown is a text file. If you want it to be understood, you need to add a chunk of code
+* insert chunk button
+* typ e"``` {r}" and click enter
+
+##Text Formatting
+* Italics: surround text with * or _
+* Bold: ** or __
+* Headers: number of pounds 
+
+Inline r code. You need one ` and the letter r followed by the code in between. 
+
+##Chunk options
+*include: results of chunk show in final report
+*echo: does not include results or chunk in report

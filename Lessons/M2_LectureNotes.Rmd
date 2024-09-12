@@ -20,7 +20,9 @@ Rmarkdown is a text file. If you want it to be understood, you need to add a chu
 ##Text Formatting
 * Italics: surround text with * or _
 * Bold: ** or __
-* Headers: number of pounds 
+* Headers: number of pounds determines header level
+
+More formatting can be fround
 
 Inline r code. You need one ` and the letter r followed by the code in between. 
 

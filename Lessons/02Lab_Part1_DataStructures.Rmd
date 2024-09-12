@@ -1,0 +1,251 @@
+---
+title: "Lab 2 - Data Structures in R"
+author: "John Fay & Luana Lima"
+date: "Fall 2024"
+output: pdf_document
+subtitle: Environmental Data Analytics
+---
+
+## Objective
+Discuss and navigate different data types in R
+ - Vectors
+ - Matrices
+ - Arrays
+ - Data frames
+
+---
+
+## Data Types in R
+R treats objects differently based on their characteristics. For more information, please see: <https://www.statmethods.net/input/datatypes.html>.
+
+-   **Vectors** 1 dimensional structure that contains elements of the same type.
+
+-   **Matrices** 2 dimensional structure that contains elements of the same type.
+
+-   **Arrays** Similar to matrices, but can have more than 2 dimensions. We will not delve into arrays in depth.
+
+-   **Lists** Ordered collection of elements that can have different modes.
+
+-   **Data Frames** 2 dimensional structure that is more general than a matrix. Columns can have different modes (e.g., numeric and factor). When we import csv files into the R workspace, they will enter as data frames.
+
+---
+
+## Vectors
+### Creating Vectors
+Add comments below that specify what kind of vectors are created. (First answer is provided.)
+
+```{r Creating vectors}
+# Vectors ----
+vector1 <- c(1,2,5.3,6,-2,4) # Vector type: Numeric
+vector1
+class(vector1)
+
+vector2 <- c("one","two","three") # Vector type: Character
+vector2
+
+vector3 <- c(TRUE,TRUE,TRUE,FALSE,TRUE,FALSE) # Vector type: Logical
+vector3
+```
+
+### Vector Operations
+Add comments below to indicate what each operation does.(First answer is provided.)
+
+```{r Vector operatons}
+# Returns the 3rd item in the vector
+vector1[3]
+
+# Gives the maximum value
+max(vector1)
+
+#Create another vector of the values 10 through 15
+vector4 <- c(10:15)
+
+# Creates a new vector with the values of vector 1 followed by vector 4
+c(vector1, vector4)
+
+# multiplies the values in the same index in vector 1 and 4 together
+vector1 * vector4
+
+# multiplies each value in vector 1 by 10
+vector1 * 10
+
+# changes all characters to uppercase
+toupper(vector2) 
+
+# Gives the opposite value of vector 3 - can only be applied to logical objects
+!vector3
+
+```
+
+### Exercise 1a: Vector
+Find a 5-day forecast of temperatures (Fahrenheit) for Durham, North Carolina. Create a vector representing the high temperature on each of the five days.
+<https://www.wunderground.com/forecast/us/nc/durham/KNCDURHA138>
+
+```{r Vector Exercise}
+
+#Assign to the variable 'temps_F' a vector of high temperatures in F
+temps_F <- c(80,82,80,75,74)
+
+#What is the average of these temperatures: 78.2 
+temps_avg <- mean(temps_F)
+
+#Compute the difference between each temperature and the average calculated above
+temps_diff <- temps_F - temps_avg
+
+#Subtract 32 and multiply by 5/9ths to create a vector in Celsius
+temps_C <- (temps_F-32)* 5/9 
+
+```
+
+## Matrices
+###Creating Matrices
+Complete the comments below:
+```{r Creating Matrices}
+# Matrices ----
+matrix1 <- matrix(1:20, nrow = 5,ncol = 4) # 
+matrix1
+#matrix1 has 5 rows and 4 columns
+
+matrix2 <- matrix(1:20, nrow = 5, ncol = 4, byrow = TRUE) #
+matrix2
+#matrix2 has 5 rows and 4 columns
+
+matrix3 <- matrix(
+  data = 1:20, 
+  nrow = 5, 
+  ncol = 4, 
+  byrow = TRUE, # return after comma continues the line
+  dimnames = list(
+    c("uno", "dos", "tres", "quatro", "cinco"), #names rows
+    c("un", "deux", "trois", "quatre") #names columns
+    )
+  ) 
+
+```
+
+### Matrix Operations
+Add comments in the code chunk below to indicate type of vectors created and what each operation does.
+```{r Matrix Operations}
+
+matrix1[4, 1] # provide the value in the 4th row and 1st column of matrix1
+
+matrix1[4,  ] # provide all values in the 4th row of matrix1
+
+matrix1[ , 3] # provide all values in the 3rd column of matrix1
+
+matrix1[c(12, 14)] # provide the 12th and 14th value in matrix1
+
+matrix1[c(12:14)] # provide the 12th to 14th values in matrix1
+
+matrix1[2:4, 1:3] # provide all values in rows 2-4 within columns 1-3 of matrix1
+
+#Create a vector of 6 values
+values <- c(1, 26, 24, 68, 3, 44)
+#Create a vector of row names
+rnames <- c("R1", "R2") 
+#Create a vector of column names
+cnames <- c("C1", "C2", "C3") 
+
+matrix4 <- matrix(
+  data = values, 
+  nrow = 2, 
+  ncol = 3, 
+  byrow = TRUE,
+  dimnames = list(
+    rnames, 
+    cnames)
+  ) # creates a matrix out of the vector values with row and column names from the vectors rnames and cnames
+
+matrix4 # gets the value that is in row 2 and column 1 by calling on the dimension names
+
+matrix4['R2','C1']
+```
+
+### Exercise 1b: Matrices
+Compute the mean of column "C2" in matrix4. (Should be 14.5)
+```{r Matrix Exercise}
+mean_m4c2 <- mean(matrix4[,'C2'])
+```
+
+
+
+## Lists
+### Creating Lists
+```{r Creating Lists}
+# Lists ---- 
+# Creating Lists
+list1 <- list(
+  name = "Maria", 
+  mynumbers = vector1, 
+  mymatrix = matrix1, 
+  age = 5.3)
+
+```
+
+
+### List Operations
+```{r List Operations}
+# List Operations
+
+# show the list
+list1
+
+# Get the age object from the list
+list1$age
+
+# Get the names of the objects in the list
+names(list1)
+
+# Get the first two objects in the list
+list1[1:2]
+
+# Change the name object in the list to Janelle
+list1$name = "Janelle"
+
+# changes the value within object 4 of the list (which is age) to 44. Same as above.
+list1[[4]] = 44
+```
+
+## Data Frames
+### Creating dataframes
+```{r Creating data frames}
+# Data Frames ----
+#Create three vectors of equal length
+d <- c(1, 2, 3, 4) # What type of vector?
+e <- c("red", "white", "red", NA) # What type of vector?
+f <- c(TRUE, TRUE, TRUE, FALSE) # What type of vector?
+
+#Combine the vectors into a dataframe
+dataframe1 <- data.frame(d,e,f) 
+
+#Set the column names & View
+names(dataframe1) <- c("ID","Color","Passed"); # semicolon is a command termination - it shows where one command ends and another begins
+
+#Add a new column to the dataframe
+dataframe1$month <- c('Jan','Feb', 'Mar', 'Apr')
+
+```
+
+
+### Dataframe operations
+```{r Dataframe Operations}
+#Extract a column from the dataframe f
+dataframe1$Color
+
+#Extract a row
+dataframe1[2,]
+
+#Extract several rows
+dataframe1[1:2,] 
+
+#Extract a column
+dataframe1[,1]
+
+#Extract a column/columns from their name
+out1 <- dataframe1['Color']; class(out1)
+
+out2 <- dataframe1$Color; class(out2)
+
+out3 <- dataframe1[c("ID","Passed")]; class(out3)
+
+```

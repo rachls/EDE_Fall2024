@@ -150,7 +150,7 @@ stud_results2
 
 14. QUESTION: Which option of `if`...`else` vs. `ifelse` worked? Why? (Hint: search the web for "R vectorization")
 
-> Answer: A vectorized function in R will act on all elements of a vector without needing for a loop to manually called/coded. This is exemplified in pass_fail2, where the logical test is performed on each element. The if... else statement is not vectorized. This means it is not equipped to deal with a vector unless the loop has taken this into account. I have created a new function, pass_fail3, below to implement this change.
+> Answer: The ifelse function worked on the vector. A vectorized function in R will act on all elements of a vector without needing for a loop to manually called/coded. This is exemplified in pass_fail2, where the logical test is performed on each element. The if... else statement is not vectorized. This means it is not equipped to deal with a vector unless the loop has taken this into account. I have created a new function, pass_fail3, below to implement this change.
 
 ```{r pass/fail function 3}
 

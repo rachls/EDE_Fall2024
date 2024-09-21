@@ -95,7 +95,9 @@ sort(summary(Neonics$Effect),decreasing = TRUE)
 
 ```{r Neonics_sum_species}
 #get summary statistics of the studied species
-summary(Neonics$Species.Common.Name, maxsum = 7) #note: sort is not needed with maxsum because maxsum automatically takes the most frequent levels. n+1 levels need to be specified because one is dedicated to "other".
+summary(Neonics$Species.Common.Name, maxsum = 7) #note: sort is not needed with maxsum because maxsum 
+                                                 #automatically takes the most frequent levels. n+1 
+                                                 #levels need to be specified one level is "other".
 
 ```
 
@@ -133,7 +135,7 @@ ggplot(Neonics)+
 ggplot(Neonics)+
   geom_freqpoly(aes(x = Publication.Year, colour = Test.Location))+
   labs(
-    title = "Number of Publications on the Effect of Neonictinoids on\nInsects by Year",
+    title = "Number of Publications on the Effect of Neonictinoids on\nInsects by Year and Test Location",
     x = "Publication Year",
     y = "Count")
 
@@ -158,64 +160,97 @@ ggplot(Neonics)+
     y = "Count")
 ```
 
-> Answer: FILL IN ANSWER HERE. ANSWER. ANSWER. ANSWER
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+> Answer: The top endpoint is NOEL. NOEL stands for 'no observable effect level' and is used in the database for terrestrial usage. NOEL is defined as the highest concentration at which there is no statistical difference from the control. The second top endpoint is LOEL. LOEL stands for 'lowest observable effect level' and is used in the database for terrestrial usage. LOEL is defined as the lowest concentration (dose) at which there is a statistical difference from the control.
 
 ## Explore your data (Litter)
 
 12. Determine the class of collectDate. Is it a date? If not, change to a date and confirm the new class of the variable. Using the `unique` function, determine which dates litter was sampled in August 2018.
 
-```{r}
+```{r litter_dateclass}
+#determine the class of collectdate using the class function
+class(Litter$collectDate)
 
+#check the format of the date
+head(Litter$collectDate)
 
+#The class is changed to date using lubridate
+Litter$collectDate <- ymd(Litter$collectDate)
+
+#check class
+class(Litter$collectDate)
+
+#check correct year month day is saved correctly
+head(Litter$collectDate, 3)
+head(format(Litter$collectDate, format = "%B %d, %Y"), 3)
 ```
 
 13. Using the `unique` function, determine how many different plots were sampled at Niwot Ridge. How is the information obtained from `unique` different from that obtained from `summary`?
 
-```{r}
+```{r litter_unique}
+#check the unique plots at Niwot ridge
+unique(Litter$plotID)
 
-
+#check the summary of the plots at Niwot ridge
+summary(Litter$plotID)
 ```
 
-> Answer:
+> Answer: The unique function provides the levels of plots at Niwot Ridge. The summary function provides the count for each level. The summary function therefore provides all of the information the unique function provides and more information (i.e., count). 
 
 14. Create a bar graph of functionalGroup counts. This shows you what type of litter is collected at the Niwot Ridge sites. Notice that litter types are fairly equally distributed across the Niwot Ridge sites.
 
-```{r}
-
+```{r litter_bar}
+#create bar graph specifying axes and titles
+ggplot(data = Litter, aes(x = functionalGroup))+
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5))+
+  labs(
+    title = "Counts of Functional Group in Litterfall and Woody Debris Data",
+    x = "Functional Group",
+    y = "Count")
 
 ```
 
 15. Using `geom_boxplot` and `geom_violin`, create a boxplot and a violin plot of dryMass by functionalGroup.
 
-```{r}
+```{r litter_box_violin}
+# create a boxplot
+ggplot(data = Litter)+
+  geom_boxplot(aes(x = functionalGroup, y = dryMass))+
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5))+
+  labs(
+    title = "Counts of Functional Group in Litterfall and Woody Debris Data",
+    x = "Functional Group",
+    y = "Dry Mass (g)")
 
+# create a violin plot
+ggplot(data = Litter)+
+  geom_violin(aes(x = functionalGroup, y = dryMass), 
+              drop = FALSE, 
+              draw_quantiles = c(0.25, 0.5, 0.75))+
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5))+
+  labs(title = "Counts of Functional Group in Litterfall and Woody Debris Data",
+    x = "Functional Group",
+    y = "Dry Mass (g)")
+
+# The violin plot distribution for many functional groups seems to be concentrated  
+# at low mass levels.Using ylim, look at the lowest masses to see some of these 
+# distributions
+ggplot(data = Litter)+
+  geom_violin(aes(x = functionalGroup, y = dryMass), 
+              drop = FALSE, 
+              draw_quantiles = c(0.25, 0.5, 0.75))+
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5))+
+  labs(title = "Counts of Functional Group in Litterfall and Woody Debris Data",
+    x = "Functional Group",
+    y = "Dry Mass (g)")+
+  ylim(0, 0.02)
 
 ```
 
 Why is the boxplot a more effective visualization option than the violin plot in this case?
 
-> Answer:
+> Answer: The violin plots does not well illustrate the distributions. The values are mostly all concentrated in between masses of 0g and 0.02g except for mixed, needles, and twig/branches functional groups having larger distributions. These smaller distributions are not well illustrated due to these scale differences. There are also a couple groups with designated 'outliers'. This is shown on the violin plot as a straight line connecting these outliers to the majority of the data It is not clear how many outliers lie between the largest mass outlier and most of the values. The box plot more clearly represents the distribution of the functional groups at smaller scales
 
 What type(s) of litter tend to have the highest biomass at these sites?
 
-> Answer:
+> Answer: Needles tend to have the highest biomass at these sites followed by mixed and twig/branches.

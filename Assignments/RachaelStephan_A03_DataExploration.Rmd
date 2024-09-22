@@ -56,18 +56,18 @@ Litter <- read.csv(
 
 2.  The neonicotinoid dataset was collected from the Environmental Protection Agency's ECOTOX Knowledgebase, a database for ecotoxicology research. Neonicotinoids are a class of insecticides used widely in agriculture. The dataset that has been pulled includes all studies published on insects. Why might we be interested in the ecotoxicology of neonicotinoids on insects? Feel free to do a brief internet search if you feel you need more background information.
 
-> Answer: Neonictinoids are a common pesticide that have recently been suspect of having deleterious effects on insect populations, including acting as neurotoxins. Neonictinoids have a high toxicity for invertebrates, and their broad spectrum application mean they will impact many taxa. This can become an issue when the pesticides begin to have impacts on nontarget species that provide important ecosystem services, such as pollinators. Understanding how common agriculture pesticides impact invertebrates can help us preserve healthy populations.  
+> Answer: Neonictinoids are a common pesticide that have recently been suspect of having deleterious effects on insect populations, including acting as neurotoxins. Neonictinoids have a high toxicity for invertebrates, and their broad spectrum application mean they will impact many taxa. This can become an issue when the pesticides begin to have impacts on nontarget species that provide important ecosystem services, such as pollinators. Understanding how common agriculture pesticides impact invertebrates can help us preserve healthy populations of plants and insects.  
 
 3.  The Niwot Ridge litter and woody debris dataset was collected from the National Ecological Observatory Network, which collectively includes 81 aquatic and terrestrial sites across 20 ecoclimatic domains. 32 of these sites sample forest litter and woody debris, and we will focus on the Niwot Ridge long-term ecological research (LTER) station in Colorado. Why might we be interested in studying litter and woody debris that falls to the ground in forests? Feel free to do a brief internet search if you feel you need more background information.
 
-> Answer: litter and woody debris may be important components of the carbon cycle and ecosystem component. The litter and woody debris will release carbon and organic matter into the soil as they decompose. Certain animals may also use them as a food source (i.e., decomposers) or as a habitat. Additionally, the litter and woody debris may pose as a fire risk as they can act as the tinder to flames.   
+> Answer: litter and woody debris may be important components of the carbon cycle and the ecosystem. The litter and woody debris will release carbon and organic matter into the soil as they decompose to facilitate new growth and uptake. Certain animals may also use them as a food source (i.e., decomposers) or as a habitat. Additionally, wer may be interested in these for safety reasons because litter and woody debris may increase fire risk as they can act as tinder.   
 
 4.  How is litter and woody debris sampled as part of the NEON network? Read the NEON_Litterfall_UserGuide.pdf document to learn more. List three pieces of salient information about the sampling methods here:
 
 > Answer: 
- 1. Litterfall and woody debris are quantified by mass captured in aerial and ground traps 
- 2. Masses < 0.01 g are reported for presence of functional groups but not quantified
- 3. finest temporal resolution is day of trapping; finest spatial resolution is one trap
+ 1. Litterfall and woody debris are quantified by mass captured in aerial and ground traps /n
+ 2. Masses < 0.01 g are reported for presence of functional groups but not quantified/n
+ 3. finest temporal resolution is day of trapping; finest spatial resolution is one trap/n
  4. latitude, longitude, and elevation of the plot center are recorded
 
 ## Obtain basic summaries of your data (Neonics)
@@ -79,8 +79,7 @@ Litter <- read.csv(
 dim(Neonics)
 
 ```
-> Answer: 
-4623 rows and 30 columns
+> Answer: 4623 rows and 30 columns
 
 6.  Using the `summary` function on the "Effect" column, determine the most common effects that are studied. Why might these effects specifically be of interest? [Tip: The `sort()` command is useful for listing the values in order of magnitude...]
 
@@ -89,16 +88,15 @@ dim(Neonics)
 sort(summary(Neonics$Effect),decreasing = TRUE)
 ```
 
-> Answer: The top 5 most common effects from most common to less common are population, mortality, behaviour, feeding behaviour, and reproduction. These effects may be of specific interest because it is important to understand the main effects of the pesticides. Also, looking at commanalities between these effects can indicate severity and possible target systems of the insecticide. 
+> Answer: The top 5 most common effects from most common to less common are population, mortality, behaviour, feeding behaviour, and reproduction. These effects may be of specific interest because it is important to understand the mechanisms through which pesticides impact insects. Looking at commanalities between these effects can indicate possible target insect systems (e.g., nervous system) and the relative toxicity insecticides pose to these systems (i.e., more common effect meaning that insecticide poses a higher toxicity to the related organs/systems). The effects listed, such as mortality, are also severe effects that indicate this may be a significant issue to resolve. 
 
 7.  Using the `summary` function, determine the six most commonly studied species in the dataset (common name). What do these species have in common, and why might they be of interest over other insects? Feel free to do a brief internet search for more information if needed.[TIP: Explore the help on the `summary()` function, in particular the `maxsum` argument...]
 
 ```{r Neonics_sum_species}
 #get summary statistics of the studied species
-summary(Neonics$Species.Common.Name, maxsum = 7) #note: sort is not needed with maxsum because maxsum 
-                                                 #automatically takes the most frequent levels. n+1 
-                                                 #levels need to be specified one level is "other".
-
+#note: sort is not needed with maxsum because maxsum automatically takes the most frequent levels.
+#     n+1 levels are needed to be specified because one level is "other".
+summary(Neonics$Species.Common.Name, maxsum = 7) 
 ```
 
 > Answer: The top six species are all bees or wasps. These are all important pollinators. Pollinators perform important ecosystem services of pollinating plants to ensure their successful reproduction. Without these species, or with impaired individuals, plant reproduction would falter and the parts of the ecosystem they support would also suffer.  
@@ -111,7 +109,7 @@ class(Neonics$Conc.1..Author.)
 
 ```
 
-> Answer: The column has a class of factor. The column represents the concentration of the chemicals, but the units of these concentrations are not all the same. Therefore, it would not be helpful to have all of these values on the same numerical axis because their relative relationships would not be accurate. 
+> Answer: The column has a class of factor. The column represents the concentration of the chemicals, but the scales of these concentrations are not all the same. Some values are numeric (although it would not be helpful to have all of these values on the same numerical axis because their units are different and the relative relationships would not be accurate). However, others are not numerical and include characters (e.g., 144/, NR, >=13.66, and ~41). Since all strings were specified to be factors, the class of this column is factor. 
 
 ## Explore your data graphically (Neonics)
 
@@ -143,7 +141,7 @@ ggplot(Neonics)+
 
 Interpret this graph. What are the most common test locations, and do they differ over time?
 
-> Answer: The most common test location is the laboratory. Although laboratory studies have always been popular, there were some periods of time (i.e., ~1993-2001 and 2009) where natural field studies were more popular (or published). Artifical field and undeterminable field studies have not been very popular over this data set. 
+> Answer: The most common test location is the laboratory. Although laboratory studies have always been popular, there were some periods of time (i.e., ~1993-2001 and 2009) where natural field studies were more popular (or more published). Artifical field and undeterminable field studies have not been very popular throughout this data set. 
 
 11. Create a bar graph of Endpoint counts. What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix for more information. 
 
@@ -180,8 +178,10 @@ Litter$collectDate <- ymd(Litter$collectDate)
 class(Litter$collectDate)
 
 #check correct year month day is saved correctly
-head(Litter$collectDate, 3)
 head(format(Litter$collectDate, format = "%B %d, %Y"), 3)
+
+#check which dates litter was sampled
+format(unique(Litter$collectDate), format = "%B %d, %Y")
 ```
 
 13. Using the `unique` function, determine how many different plots were sampled at Niwot Ridge. How is the information obtained from `unique` different from that obtained from `summary`?
@@ -194,7 +194,7 @@ unique(Litter$plotID)
 summary(Litter$plotID)
 ```
 
-> Answer: The unique function provides the levels of plots at Niwot Ridge. The summary function provides the count for each level. The summary function therefore provides all of the information the unique function provides and more information (i.e., count). 
+> Answer: There were 12 different plots sampled at Niwot Ridge. The unique function provides the levels of plots at Niwot Ridge. The summary function provides the count for each level. The summary function therefore provides all of the information the unique function provides and more (i.e., count). 
 
 14. Create a bar graph of functionalGroup counts. This shows you what type of litter is collected at the Niwot Ridge sites. Notice that litter types are fairly equally distributed across the Niwot Ridge sites.
 
@@ -233,8 +233,8 @@ ggplot(data = Litter)+
     y = "Dry Mass (g)")
 
 # The violin plot distribution for many functional groups seems to be concentrated  
-# at low mass levels.Using ylim, look at the lowest masses to see some of these 
-# distributions
+# at low mass levels.Using ylim, look at the lowest masses to see if this is the 
+# case for these distributions
 ggplot(data = Litter)+
   geom_violin(aes(x = functionalGroup, y = dryMass), 
               drop = FALSE, 
@@ -249,8 +249,8 @@ ggplot(data = Litter)+
 
 Why is the boxplot a more effective visualization option than the violin plot in this case?
 
-> Answer: The violin plots does not well illustrate the distributions. The values are mostly all concentrated in between masses of 0g and 0.02g except for mixed, needles, and twig/branches functional groups having larger distributions. These smaller distributions are not well illustrated due to these scale differences. There are also a couple groups with designated 'outliers'. This is shown on the violin plot as a straight line connecting these outliers to the majority of the data It is not clear how many outliers lie between the largest mass outlier and most of the values. The box plot more clearly represents the distribution of the functional groups at smaller scales
+> Answer: The violin plots does not well illustrate the distributions. The values are mostly all concentrated in between masses of 0g and 0.02g except for mixed, needles, and twig/branches functional groups, which have larger distributions. These smaller distributions are not well illustrated due to the orders of magnitude of difference between the distributions. There are also a couple groups with designated 'outliers'. This is shown on the violin plot as a straight line connecting these outliers to the majority of the data. It is not clear how many outliers lie between the largest mass outlier and most of the values. The box plot more clearly represents the distribution of the functional groups at larger and smaller scales as well as better illustrates the outliers. 
 
 What type(s) of litter tend to have the highest biomass at these sites?
 
-> Answer: Needles tend to have the highest biomass at these sites followed by mixed and twig/branches.
+> Answer: Needles tend to have the highest biomass at these sites followed by mixed and then twig/branches.

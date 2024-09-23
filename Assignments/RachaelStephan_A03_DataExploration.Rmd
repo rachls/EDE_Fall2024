@@ -117,8 +117,9 @@ class(Neonics$Conc.1..Author.)
 
 ```{r Neonics_polygeom}
 #create a frequency polygon graph to show how many studies were conducted per year
+# set bin width to 1 to show a point for each year
 ggplot(Neonics)+
-  geom_freqpoly(aes(x = Publication.Year))+
+  geom_freqpoly(aes(x = Publication.Year), binwidth = 1)+
   labs(
     title = "Number of Publications on the Effect of Neonictinoids on\nInsects by Year",
     x = "Publication Year",
@@ -131,7 +132,7 @@ ggplot(Neonics)+
 ```{r Neonics_polygeom_colour}
 #create a frequency polygon graph as above but specify the colour is based on location
 ggplot(Neonics)+
-  geom_freqpoly(aes(x = Publication.Year, colour = Test.Location))+
+  geom_freqpoly(aes(x = Publication.Year, colour = Test.Location), binwidth = 1)+
   labs(
     title = "Number of Publications on the Effect of Neonictinoids on\nInsects by Year and Test Location",
     x = "Publication Year",
@@ -141,7 +142,7 @@ ggplot(Neonics)+
 
 Interpret this graph. What are the most common test locations, and do they differ over time?
 
-> Answer: The most common test location is the laboratory. Although laboratory studies have always been popular, there were some periods of time (i.e., ~1993-2001 and 2009) where natural field studies were more popular (or more published). Artifical field and undeterminable field studies have not been very popular throughout this data set. 
+> Answer: The most common test location is the laboratory. Although laboratory studies have always been popular, there were some periods of time (i.e., ~1993-2001, 2005, and 2009) where natural field studies were more popular (or more published). Artifical field and undeterminable field studies have not been very popular throughout this data set. 
 
 11. Create a bar graph of Endpoint counts. What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix for more information. 
 

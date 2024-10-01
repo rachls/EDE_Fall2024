@@ -51,27 +51,27 @@ epaair_pm25_2018 <- read.csv(file = here('./Data/Raw/EPAair_PM25_NC2018_raw.csv'
 epaair_pm25_2019 <- read.csv(file = here('./Data/Raw/EPAair_PM25_NC2019_raw.csv'),
                         stringsAsFactors = TRUE)
 
-#2 Check dimensions and structure of data sets
+#2 Check dimensions of data sets 
 dim(epaair_o3_2018)
-str(epaair_o3_2018)
 
 dim(epaair_o3_2019)
-str(epaair_o3_2019)
 
 dim(epaair_pm25_2018)
-str(epaair_pm25_2018)
 
 dim(epaair_pm25_2019)
-str(epaair_pm25_2019)
 ```
 
-All four datasets should have the same number of columns but unique record counts (rows). Do your datasets follow this pattern? 
->epaair_o3_2018: 9737 rows, 20 columns 
->epaair_o3_2019: 10592 rows, 20 columns 
->epaair_pm25_2018: 8983 rows, 20 columns 
->epaair_pm25_2019: 8581 rows, 20 columns
+All four datasets should have the same number of columns but unique record counts (rows). Do your datasets follow this pattern?
+
+> epaair_o3_2018: 9737 rows, 20 columns
 >
-> Yes. My datasets follow this pattern.
+> epaair_o3_2019: 10592 rows, 20 columns
+>
+> epaair_pm25_2018: 8983 rows, 20 columns
+>
+> epaair_pm25_2019: 8581 rows, 20 columns
+>
+> Yes. My data sets follow this pattern.
 
 ## Wrangle individual datasets to create processed files.
 
@@ -83,9 +83,9 @@ All four datasets should have the same number of columns but unique record count
 
 6.  Save all four processed datasets in the Processed folder. Use the same file names as the raw files but replace "raw" with "processed".
 
-```{r questions 3 thru 4}
+```{r questions 3 thru 4, results='hide'}
 #3 Change each dataset's date column to date objects by checking the format and 
-  #using the corresponding lubridate function.
+  #using the corresponding lubridate function. Results are not printed.
 
 head(epaair_o3_2018$Date, 3)
 epaair_o3_2018$Date <- mdy(epaair_o3_2018$Date)
@@ -103,14 +103,12 @@ epaair_pm25_2019$Date <- mdy(epaair_pm25_2019$Date)
 epaair_o3_2018_processed <- 
   epaair_o3_2018 %>%
   select(Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY,
-         SITE_LATITUDE, SITE_LONGITUDE) %>%
-  mutate(AQS_PARAMETER_DESC = "PM2.5")
+         SITE_LATITUDE, SITE_LONGITUDE)
 
 epaair_o3_2019_processed <- 
   epaair_o3_2019 %>%
   select(Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY,
-         SITE_LATITUDE, SITE_LONGITUDE) %>%
-  mutate(AQS_PARAMETER_DESC = "PM2.5")
+         SITE_LATITUDE, SITE_LONGITUDE)
 
 epaair_pm25_2018_processed <- 
   epaair_pm25_2018 %>%
@@ -127,22 +125,22 @@ epaair_pm25_2019_processed <-
 #6 Save the processed files to the processed folder
 write.csv(
   epaair_o3_2018_processed, 
-  file = here("./Data/Processed/epaair_o3_2018_processed.csv"), 
+  file = here("./Data/Processed/EPAair_O3_NC2018_processed.csv"), 
   row.names=FALSE)
 
 write.csv(
   epaair_o3_2019_processed, 
-  file = here("./Data/Processed/epaair_o3_2019_processed.csv"), 
+  file = here("./Data/Processed/EPAair_O3_NC2019_processed.csv"), 
   row.names=FALSE)
 
 write.csv(
   epaair_pm25_2018_processed, 
-  file = here("./Data/Processed/epaair_pm25_2018_processed.csv"), 
+  file = here("./Data/Processed/EPAair_PM25_NC2018_processed.csv"), 
   row.names=FALSE)
 
 write.csv(
   epaair_pm25_2019_processed, 
-  file = here("./Data/Processed/epaair_pm25_2019_processed.csv"), 
+  file = here("./Data/Processed/EPAair_PM25_NC2019_processed.csv"), 
   row.names=FALSE)
 ```
 
@@ -154,8 +152,7 @@ write.csv(
 
 -   Include only sites that the four data frames have in common:
 
-"Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue",
-"Clemmons Middle", "Mendenhall School", "Frying Pan Mountain", "West Johnston Co.", "Garinger High School", "Castle Hayne", "Pitt Agri. Center", "Bryson City", "Millbrook School"
+"Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue", "Clemmons Middle", "Mendenhall School", "Frying Pan Mountain", "West Johnston Co.", "Garinger High School", "Castle Hayne", "Pitt Agri. Center", "Bryson City", "Millbrook School"
 
 (the function `intersect` can figure out common factor levels - but it will include sites with missing site information, which you don't want...)
 
@@ -174,10 +171,10 @@ write.csv(
 ```{r questions 7 thru 11}
 #7 
 #check column names of datasets to see if they are the same
-unique(c(colnames(epaair_o3_2018_processed),
-colnames(epaair_o3_2019_processed),
-colnames(epaair_pm25_2018_processed),
-colnames(epaair_pm25_2019_processed)))
+colnames(epaair_o3_2018_processed)
+colnames(epaair_o3_2019_processed)
+colnames(epaair_pm25_2018_processed)
+colnames(epaair_pm25_2019_processed)
 
 #combine columns
 epaair_all <- rbind(epaair_o3_2018_processed, 
@@ -198,21 +195,34 @@ sites <- as.factor(c("Linville Falls", "Durham Armory", "Leggett",
 epaair_all_processed <-
   epaair_all %>%
   filter(Site.Name %in% sites) %>% #filter for wanted sites
-  
-  mutate(Month = month(Date)) %>% #add columns for month
-  mutate(Year = year(Date))  #add columns for year
+  group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY)%>% #group
+  summarise(mean_AQI = mean(DAILY_AQI_VALUE), #summarize values of interest
+            mean_lat = mean(SITE_LATITUDE),
+            mean_long = mean(SITE_LONGITUDE))%>%
+  mutate(Month = month(Date)) %>% #add column for month
+  mutate(Year = year(Date)) %>% #add column for year
+  select(Date, Year, Month, COUNTY, Site.Name, AQS_PARAMETER_DESC, #reorder
+         mean_AQI:mean_long)
 
-#-   Some sites have multiple measurements per day. Use the split-apply-combine strategy to generate daily means: group by date, site name, AQS parameter, and county. Take the mean of the AQI value, latitude, and longitude.
-
+#check dims
+dim(epaair_all_processed)
 
 #9
-
+#use pivot wider to separate o3 and pm2.5
+epaair_all_processed_wide <- pivot_wider(
+  epaair_all_processed,
+  names_from = AQS_PARAMETER_DESC, 
+  values_from = mean_AQI)
 
 #10
-
+#get new dims and take a brief look at matrix with tibble
+dim(epaair_all_processed_wide)
+tibble(epaair_all_processed_wide)
 
 #11
-
+#save new table to CSV
+write.csv(epaair_all_processed_wide, row.names = FALSE, 
+          file ="./Data/Processed/EPAair_O3_PM25_NC1819_Processed.csv")
 
 ```
 
@@ -225,14 +235,22 @@ epaair_all_processed <-
 ```{r questions 12 and 13}
 
 #12
-
+#perform pipe to get summary
+epaair_all_summary <-
+  epaair_all_processed_wide %>%
+  group_by(Site.Name, Year, Month)%>%
+  summarise(mean_o3_AQI = mean(Ozone),
+            mean_pm25_AQI = mean(PM2.5))%>%
+  drop_na(mean_o3_AQI)
 
 #13
-
+#get new dims and take a brief look at matrix with tibble
+dim(epaair_all_summary)
+tibble(epaair_all_summary)
 
 
 ```
 
 14. Why did we use the function `drop_na` rather than `na.omit`? Hint: replace `drop_na` with `na.omit` in part 12 and observe what happens with the dimensions of the summary date frame.
 
-> Answer:
+> Answer: The `na.omit` function does not allow for column control. It will drop any row/observation that contains NA without discrimination. The `drop_na` function will allow specification for which column(s) to examine for NA values. `drop_na` will only drop rows/oberservations in

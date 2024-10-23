@@ -25,6 +25,10 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Vi
 ---
 
 ## Set up your session 
+```{r chunk setup, echo=FALSE}
+#set up chunk options
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
 
 1. Set up your session. Load the tidyverse, lubridate, here & cowplot packages, and verify your home directory. Read in the NTL-LTER processed data files for nutrients and chemistry/physics for Peter and Paul Lakes (use the tidy `NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv` version in the Processed_KEY folder) and the processed data file for the Niwot Ridge litter dataset (use the `NEON_NIWO_Litter_mass_trap_Processed.csv` version, again from the Processed_KEY folder). 
 
@@ -39,7 +43,7 @@ library(tidyverse); library(lubridate); library(cowplot); library(here)
 getwd()
 here()
 
-#load in datasets
+#load in datasets. Note, file name is too long to fit on page.
 pp_chem_nutrients <- read.csv(
   file = here("./Data/Processed/Processed_KEY/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv"),
   stringsAsFactors = TRUE)
@@ -75,8 +79,8 @@ custom_theme <-
         plot.title.position = "panel",
         legend.box = "vertical",
         legend.location = "plot",
-        axis.ticks = element_line(color = "black", linewidth = 0.5),
-        axis.gridlines = element_line(color = "grey"))
+        axis.gridlines = element_line(color = "grey", linewidth = 0.25),
+        axis.ticks = element_line(color = "black", linewidth = 0.5))
 
 ```
 
@@ -93,10 +97,10 @@ totp_phos <- ggplot(pp_chem_nutrients,
   geom_point(size = 0.5)+
   labs(title = "Total Phosphorous vs. Phosphate of\nPeter Lake and Paul Lake",
        y = "Total Phosphorous (ug)",
-       x = "Phosphate",
+       x = "Phosphate (ug)",
        color = "Lake Name")+
   xlim(0,50)+
-  geom_smooth(method = lm, size = 0.5, alpha = 0.2)+
+  geom_smooth(method = lm, linewidth = 0.5, alpha = 0.2)+
   custom_theme
 
 totp_phos
@@ -118,9 +122,10 @@ pp_chem_nutrients$month <- factor(pp_chem_nutrients$month,
        labels = month.abb)
 ```
 
-```{r Create boxplots}
+```{r Create boxplots, fig.height= 6}
 #5 
-#create temperature plot
+#create temperature plot. Note, title is too long to fit. Spacing code over
+#2 lines makes the title come out weird
 temp_plot <- ggplot(
   pp_chem_nutrients,
   aes(x = month, 
@@ -167,7 +172,8 @@ tp_plot <- ggplot(
 
 #combine plots using cowplot
 plot_grid(temp_plot, tn_plot, tp_plot, nrow = 3, 
-  align = "v")
+  align = "v",
+  rel_heights = c(1, 1, 1.25))
 ```
 
 Question: What do you observe about the variables of interest over seasons and between lakes? 
@@ -192,13 +198,14 @@ needles_plot <- ggplot(
        color = "NLCD Class")+
   scale_x_date(date_breaks = "3 months", date_labels = "%b %y") +
   custom_theme+
-  scale_color_discrete(labels=c("Forest - Evergreen", "Herbaceous - Grasslands", "Scrub - Shrubs"))+
+  scale_color_discrete(labels=c("Forest - Evergreen", "Herbaceous - Grasslands", 
+                                "Scrub - Shrubs"))+
   theme(axis.text.x = element_text(angle = 45,  hjust = 1))
 
 needles_plot
 
 #7
-#
+#facet the needles plot
 needles_plot_facet <-  ggplot(
   subset(neon_niwot_litter, functionalGroup == "Needles"),
   aes(x = collectDate, y = dryMass))+
@@ -217,7 +224,6 @@ needles_plot_facet <-  ggplot(
   theme(axis.text.x = element_text(angle = 45,  hjust = 1))
 
 needles_plot_facet
-
 
 ```
 Question: Which of these plots (6 vs. 7) do you think is more effective, and why? 

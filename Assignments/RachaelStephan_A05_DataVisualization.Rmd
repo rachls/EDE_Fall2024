@@ -45,21 +45,22 @@ here()
 
 #load in datasets. Note, file name is too long to fit on page.
 pp_chem_nutrients <- read.csv(
-  file = here("./Data/Processed/Processed_KEY/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv"),
+  file = here("./Data/Processed_KEY/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv"),
   stringsAsFactors = TRUE)
 
 neon_niwot_litter <- read.csv(
-  file = here("./Data/Processed/Processed_KEY/NEON_NIWO_Litter_mass_trap_Processed.csv"),
-  stringsAsFactors = TRUE)
+  file = here("./Data/Processed_KEY/NEON_NIWO_Litter_mass_trap_Processed.csv"),
+  stringsAsFactors = TRUE) %>%
+  mutate(collectDate = ymd(collectDate))
 
 #2 
 #check date formats
 str(pp_chem_nutrients)
-str(neon_niwot_litter)
+
 
 #change dates from factors to correct format
 pp_chem_nutrients$sampledate <- ymd(pp_chem_nutrients$sampledate)
-neon_niwot_litter$collectDate <- ymd(neon_niwot_litter$collectDate)
+
 ```
 ## Define your theme
 3. Build a theme and set it as your default theme. Customize the look of at least two of the following: 

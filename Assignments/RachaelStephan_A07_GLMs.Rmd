@@ -30,14 +30,11 @@ This exercise accompanies the lessons in Environmental Data Analytics on general
 #1
 #load libraries
 library(tidyverse); library(agricolae); library(here); library(lubridate)
-
 #check working directory
 getwd()
 here()
-
 #set up chunk options
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
-
 #load in data
 NTL_chemphys <- read.csv(here("./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv"), stringsAsFactors = TRUE) %>% 
   mutate(sampledate = mdy(sampledate))
@@ -55,7 +52,6 @@ theme_set(mytheme)
 ```
 
 ## Simple regression
-
 Our first research question is: Does mean lake temperature recorded during July change with depth across all lakes?
 
 3.  State the null and alternative hypotheses for this question:
@@ -65,7 +61,6 @@ Our first research question is: Does mean lake temperature recorded during July 
     > Ha: The mean lake temperature does change with depth during July across all lakes (slope =/= 0)
 
 4.  Wrangle your NTL-LTER dataset with a pipe function so that the records meet the following criteria:
-
 -   Only dates in July - day number 183 to 213.
 -   Only the columns: `lakename`, `year4`, `daynum`, `depth`, `temperature_C`
 -   Only complete cases (i.e., remove NAs)
@@ -80,7 +75,6 @@ NTL_chemphys_wrangled <- NTL_chemphys %>%
   select(lakename, year4, daynum, depth, temperature_C) %>% # select wanted 
   na.omit() #remove empty cases
 ```
-
 ```{r scatterplot}
 #5
 #create scatterplot
@@ -101,7 +95,7 @@ NTL_vis
 > Answer: The figure suggests there is an inverse relationship between temperature and depth (i.e., at larger depths, there is a lower temperature). However, the points don't seem to follow a linear trend. There seems to be nonlinearity to the relationship (points create a bit of a backwards s-shaped curve).
 
 7.  Perform a linear regression to test the relationship and display the results.
-
+\newpage 
 ```{r linear.regression}
 #7
 #create regression
@@ -181,7 +175,7 @@ NTL_vis2 <- ggplot(data = NTL_chemphys_wrangled, aes(x=depth, y=temperature_C, c
 
 NTL_vis2
 ```
-
+\newpage
 15. Use the Tukey's HSD test to determine which lakes have different means.
 
 ```{r tukey.test}
@@ -202,12 +196,11 @@ NTL.HSD$groups
 > Answer: You could perform a t-test on Peter Lake and Paul lake. This test is designed to test differences in means between two categories.
 
 18. Wrangle the July data to include only records for Crampton Lake and Ward Lake. Run the two-sample T-test on these data to determine whether their July temperature are same or different. What does the test say? Are the mean temperatures for the lakes equal? Does that match you answer for part 16?
-
+\newpage
 ```{r t.test}
 #wrangle data
 NTL_chemphys_wrangled_clwl <- NTL_chemphys_wrangled %>%
   filter(lakename == "Crampton Lake" | lakename == "Ward Lake" )
-
 #conduct ttest
 NTL.ttest <- t.test(data = NTL_chemphys_wrangled_clwl, temperature_C ~ lakename)
 NTL.ttest

@@ -232,27 +232,6 @@ GaringerOzone.monthly.comp <- as.data.frame(GaringerOzone.monthly.decomp$time.se
 #subtract seasonality from the total values
 GaringerOzone.monthly.ts.deseason <- GaringerOzone.monthly.ts - GaringerOzone.monthly.comp$seasonal
 
-#create data frame of deseasoned data to graph
-GaringerOzone.monthly.deseason <- as.data.frame(GaringerOzone.monthly.ts.deseason) %>%
-  rename(MeanOzone = x) %>%
-  bind_cols(Date = GaringerOzone.monthly$Date) %>%
-  select(Date, MeanOzone)
-  
-#create graph of deseasoned data
-ozone.ds.timeplot <- ggplot(GaringerOzone.monthly.deseason, aes(x=Date, y = MeanOzone))+
-  geom_line()+
-  geom_point()+
-  labs(title = "Deseasoned Monthly Ozone Concentration from 2010 to 2019 at Garinger High School",
-       y = "Monthly Average Max 8-hour\nOzone Concentration (ppm)")+
-  scale_x_date(breaks = seq(from = first(GaringerOzone.monthly$Date), 
-                            to = as.Date("2020-01-01"), 
-                            by = "1 year"), 
-               date_labels = "%Y") +
-  geom_smooth(method = lm, se = F)+
-  theme(plot.margin = margin(l=4, unit = "pt"), plot.title.position = "plot")
-
-ozone.ds.timeplot
-
 #16
 # run SMK test
 GaringerOzone.monthly.mk <- Kendall::MannKendall(GaringerOzone.monthly.ts.deseason)
